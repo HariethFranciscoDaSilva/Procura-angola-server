@@ -3,6 +3,7 @@ require('dotenv').config()
 
 const express = require('express')
 
+const models = require('./models/models')
 
 const app = express()
 
