@@ -1,6 +1,7 @@
-const Sequelize = require('sequelize')
 
 const dbConfig = require('../config/dbConfing')
+
+const Sequelize = require('sequelize')
 
 const sequelize = new Sequelize(
     dbConfig.DB,
@@ -14,17 +15,40 @@ const sequelize = new Sequelize(
 
 db = {}
 
-db.Op = Sequelize.Op
 
 db.Sequelize = Sequelize
 
 db.sequelize = sequelize
 
+db.Op = Sequelize.Op
+
 db.TypeAccount = require('./type-account.model')(db)
+
+db.Province = require('./province.model')(db)
+
+db.Town = require('./town.model')(db)
+
+db.District = require('./district.model')(db)
+
+db.PersonalData = require('./personal-data.model')(db)
+
+db.User = require('./user.model')(db)
+
+db.Information = require('./information.model')(db)
+
+db.InformationFile = require('./information-files.model')(db)
+
+db.InformationRemark = require('./information-remark')(db)
+
+db.Found = require('./found.model')(db)
+
+db.NotFound = require('./notFound.model')(db)
+
+db.FakeInformation = require('./fake-information.model')(db)
 
 Object.keys(db).forEach(key => {
     if(db[key].associate)
-        db.associate(db)
+        db[key].associate(db)
 })
 
 if (process.env.ENV == "DEV") {
