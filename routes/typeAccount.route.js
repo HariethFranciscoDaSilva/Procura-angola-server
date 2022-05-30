@@ -6,4 +6,6 @@ const controller = require('../controllers/typeAccount.controllers')
 
 route.post('/', controller.create)
 
+route.get('/', controller.all)
+
 module.exports = route
