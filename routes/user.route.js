@@ -5,9 +5,13 @@ const controller = require('../controllers/users.controllers')
 
 const uploadConfig = require('../config/uploadConfig').type('images')
 
+const tokenMiddleWare = require('../application/middlewares/middleware')
+
 route.get('/', controller.all)
 
 route.get('/:id', controller.one)
+
+route.post('/authenticate', controller.authenticate, tokenMiddleWare.userSetToken)
 
 route.patch('/', controller.update)
 

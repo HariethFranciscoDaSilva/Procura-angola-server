@@ -2,6 +2,8 @@ const passHash = require("../application/generate-password/passHash")
 
 const fs = require('fs')
 
+const bcrypt = require('bcrypt');
+
 const {
     User
 } = require("../models/models")
@@ -87,6 +89,29 @@ exports.update = async (req, res) => {
 exports.authenticate = async (req, res) => {
 
 
+    const user = await User.findOne({
+        where: {
+            email: req.body.email,
+        }
+    }).then(u => u).catch(err => err);
 
+    if (user || !(await bcrypt.compare(req.body.password, user.password)))
+        return res.status(404).json({
+            error: true,
+            message: "Credenciais Inválidas",
+            status: 404
+        });
+
+    if (user && !user.isActive)
+        return res.status(404).json({
+            error: true,
+            message: "Credenciais Bloqueadas",
+            status: 404
+        });
+
+
+    req.user = user;
+
+    next();
 
 }
