@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
 
     const password = await passHash()
 
-    req.body.password = password.passGen
+    req.body.password = password.password
 
     if (req.file)
         req.body.avatar = req.file.filename
@@ -86,8 +86,7 @@ exports.update = async (req, res) => {
 
 }
 
-exports.authenticate = async (req, res) => {
-
+exports.authenticate = async (req, res, next) => {
 
     const user = await User.findOne({
         where: {
@@ -95,7 +94,7 @@ exports.authenticate = async (req, res) => {
         }
     }).then(u => u).catch(err => err);
 
-    if (user || !(await bcrypt.compare(req.body.password, user.password)))
+    if (!(await bcrypt.compare(req.body.password, user.password)))
         return res.status(404).json({
             error: true,
             message: "Credenciais Inválidas",
