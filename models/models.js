@@ -22,8 +22,6 @@ db.sequelize = sequelize
 
 db.Op = Sequelize.Op
 
-db.TypeAccount = require('./type-account.model')(db)
-
 db.Province = require('./province.model')(db)
 
 db.Town = require('./town.model')(db)

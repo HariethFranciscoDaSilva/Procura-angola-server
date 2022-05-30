@@ -1,6 +1,7 @@
-
-
-module.exports = ({sequelize, Sequelize}) => {
+module.exports = ({
+    sequelize,
+    Sequelize
+}) => {
 
     const user = sequelize.define('user', {
         id: {
@@ -11,7 +12,7 @@ module.exports = ({sequelize, Sequelize}) => {
         fullName: {
             type: Sequelize.STRING,
             allowNull: false,
-        }, 
+        },
         email: {
             type: Sequelize.STRING,
             unique: true,
@@ -19,23 +20,22 @@ module.exports = ({sequelize, Sequelize}) => {
         },
         password: {
             type: Sequelize.STRING,
-            unique: true,
             allowNull: false
-        }, 
+        },
+        gender: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
         avatar: {
             type: Sequelize.STRING
         },
         telephone: {
-            type: Sequelize.STRING,
-            allowNull: false
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            unique: true,
+
         }
     })
-
-    user.associate = (model) => {
-
-        user.belongsTo(model.TypeAccount)
-
-    }
 
     return user;
 

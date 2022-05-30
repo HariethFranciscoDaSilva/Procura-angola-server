@@ -11,7 +11,7 @@ const server = require('http').createServer(app)
 
 const cors = require('cors')
 
-const { authorization } = require('./application/middlewar')
+const { authorization } = require('./application/middlewares/middlewar')
 
 const routes = require('./routes/routes')
 
