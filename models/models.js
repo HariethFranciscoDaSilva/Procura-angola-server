@@ -55,7 +55,7 @@ Object.keys(db).forEach(key => {
 
 if (process.env.ENV == "DEV") {
     sequelize.sync({
-        force: true, alter: true
+        force: false, alter: false
     });
 }
 
