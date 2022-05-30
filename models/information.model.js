@@ -16,6 +16,12 @@ module.exports = ({
         isActive: {
             type: Sequelize.BOOLEAN,
             defaultValue: true
+        },
+        avatar: {
+            type: Sequelize.STRING,
+        },
+        appeal_video: {
+            type: Sequelize.STRING,
         }
     })
 

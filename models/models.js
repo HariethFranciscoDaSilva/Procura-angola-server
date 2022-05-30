@@ -46,6 +46,8 @@ db.NotFound = require('./notFound.model')(db)
 
 db.FakeInformation = require('./fake-information.model')(db)
 
+db.HelpInformationUser = require('./help-information-user.model')(db)
+
 Object.keys(db).forEach(key => {
     if(db[key].associate)
         db[key].associate(db)
@@ -53,7 +55,7 @@ Object.keys(db).forEach(key => {
 
 if (process.env.ENV == "DEV") {
     sequelize.sync({
-        force: false
+        force: true, alter: true
     });
 }
 
