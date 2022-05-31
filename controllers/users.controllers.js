@@ -20,7 +20,7 @@ exports.create = async (req, res) => {
 
     await User.create(req.body).then(data => {
 
-        console.log(password.passGen)
+        console.log('Password: '+password.passGen)
 
         res.status(200).json({
             message: 'Usuário criado com sucesso, por favor, aguarde a confirmação por meio de seu email!'
@@ -102,7 +102,7 @@ exports.authenticate = async (req, res, next) => {
         });
 
     if (user && !user.isActive)
-        return res.status(404).json({
+        return res.status(401).json({
             error: true,
             message: "Credenciais Bloqueadas",
             status: 404

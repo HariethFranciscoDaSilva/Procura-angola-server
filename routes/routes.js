@@ -10,5 +10,7 @@ route.use('/districts', require('./district.route'))
 
 route.use('/users', require('./user.route'))
 
+route.use('/avatar', require('./profile-image.route'))
+
 
 module.exports = route

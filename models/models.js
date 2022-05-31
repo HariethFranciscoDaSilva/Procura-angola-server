@@ -36,7 +36,7 @@ db.Information = require('./information.model')(db)
 
 db.InformationFile = require('./information-files.model')(db)
 
-db.InformationRemark = require('./information-remark')(db)
+db.InformationRemark = require('./information-remark.model')(db)
 
 db.Found = require('./found.model')(db)
 
