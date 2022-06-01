@@ -6,6 +6,8 @@ const controller = require('../controllers/town.controller')
 
 route.get('/', controller.all)
 
+route.get('/province/:id', controller.allByProvince)
+
 route.get('/:id', controller.one)
 
 route.patch('/', controller.update)
