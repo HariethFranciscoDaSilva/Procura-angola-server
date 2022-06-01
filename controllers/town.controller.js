@@ -12,8 +12,18 @@ exports.all = async (req, res) => {
 
 }
 
-exports.one = async (req, res) => {
+exports.allByProvince = async (req, res) => {
 
+    const towns = await Town.findAll({
+        where: {
+            provinceId: req.params.id
+        }
+    }).then(data => data).catch(e => e)
+
+    res.json(towns);
+}
+
+exports.one = async (req, res) => {
 
     const Town = await Town.findOne({
         where: {

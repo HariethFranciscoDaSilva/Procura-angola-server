@@ -26,7 +26,7 @@ module.exports = ({
 
     PersonalData.associate = (models) => {
 
-        PersonalData.belongsTo(models.District)
+        PersonalData.belongsTo(models.Town)
 
     }
 

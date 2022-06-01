@@ -1,14 +1,11 @@
-
 const route = require('express').Router()
 
-const controller = require('../controllers/town.controller')
+const controller = require('../controllers/profile-image.controller')
 
 
 route.get('/', controller.all)
 
-route.get('/province/:id', controller.allByProvince)
-
-route.get('/:id', controller.one)
+route.get('/:avatar', controller.one)
 
 route.patch('/', controller.update)
 
