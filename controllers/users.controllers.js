@@ -94,7 +94,7 @@ exports.authenticate = async (req, res, next) => {
         }
     }).then(u => u).catch(err => err);
 
-    if (!(await bcrypt.compare(req.body.password, user.password)))
+    if (!user || !(await bcrypt.compare(req.body.password, user.password)))
         return res.status(404).json({
             error: true,
             message: "Credenciais Inválidas",
