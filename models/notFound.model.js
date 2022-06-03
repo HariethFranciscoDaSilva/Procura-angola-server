@@ -8,6 +8,10 @@ module.exports = ({sequelize, Sequelize}) => {
             type: Sequelize.UUID,
             defaultValue: Sequelize.UUIDV4,
             primaryKey: true
+        },
+        lostDate: {
+            type: Sequelize.DATEONLY,
+            allowNull: false
         }
     })
 
