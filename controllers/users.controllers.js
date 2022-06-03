@@ -92,7 +92,7 @@ exports.authenticate = async (req, res, next) => {
         where: {
             email: req.body.email,
         }
-    }).then(u => u).catch(err => err);
+    }).then(u => u).catch(err => {});
 
     if (!user || !(await bcrypt.compare(req.body.password, user.password)))
         return res.status(404).json({

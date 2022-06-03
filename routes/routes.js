@@ -14,6 +14,10 @@ route.use('/avatar', require('./profile-image.route'))
 
 route.use('/informations', require('./information.route'))
 
+route.use('/informations_files', require('./information-file.route'))
+
+route.use('/information_remarks', require('./information-remark.route'))
+
 route.use('/not_founds', require('./not-found.route'))
 
 

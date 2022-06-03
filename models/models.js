@@ -26,8 +26,6 @@ db.Province = require('./province.model')(db)
 
 db.Town = require('./town.model')(db)
 
-db.District = require('./district.model')(db)
-
 db.PersonalData = require('./personal-data.model')(db)
 
 db.User = require('./user.model')(db)

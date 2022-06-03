@@ -25,9 +25,11 @@ module.exports = ({
     })
 
     PersonalData.associate = (models) => {
-
-        PersonalData.belongsTo(models.Town)
-
+        
+        PersonalData.belongsTo(models.Town, {
+            as: "town",
+            foreignKey: "townId"
+        })
     }
 
     return PersonalData

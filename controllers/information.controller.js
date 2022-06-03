@@ -4,34 +4,47 @@ const {
     NotFound
 } = require("../models/models")
 
+const fs = require('fs')
 
 exports.create = async (req, res) => {
 
     let information, notFound
 
+    if (req.files) {
 
-    if (req.files){
-        
-        req.body.avatar = req.files['avatar'][0].filename
+        if (req.files['avatar'])
+            req.body.avatar = req.files['avatar'][0].filename
 
-        req.body.appeal_video = req.files['appeal_video'][0].filename
+        if (req.files['appeal_video'])
+            req.body.appeal_video = req.files['appeal_video'][0].filename
 
     }
-        const personalData = await PersonalData.create(req.body).then(data => data).catch(e => this.sendError('Dados Pessoais Incorrectos!', res))
+
+    const personalData = await PersonalData.create(req.body).then(data => data).catch(e => {
+
+        const d = e
+
+        this.deleteFile(req, res)
+
+        this.sendError('Dados Pessoais Incorrectos!', res)
+
+    })
 
     if (personalData) {
 
         req.body.personalDataId = personalData.id
 
         information = await Information.create(req.body).then(data => data).catch(async e => {
-            
+
             await PersonalData.destroy({
                 where: {
                     id: personalData.id
                 }
             })
 
-            this.sendError('Dados sobre informação incorrectos!', res)
+            this.deleteFile(req, res)
+
+            this.sendError(/*'Dados sobre informação incorrectos!'*/e, res)
 
         })
 
@@ -39,8 +52,14 @@ exports.create = async (req, res) => {
 
             req.body.informationId = information.id
 
-            notFound = await NotFound.create(req.body).then(data => data).catch(async e => {
-            
+            await NotFound.create(req.body).then(() => {
+
+                res.json({
+                    message: 'Post Cadastrado com sucesso!'
+                })
+
+            }).catch(async e => {
+
                 await PersonalData.destroy({
                     where: {
                         id: personalData.id
@@ -52,17 +71,16 @@ exports.create = async (req, res) => {
                         id: information.id
                     }
                 })
-    
+
+                this.deleteFile(req, res)
+
                 this.sendError('Impossível Cadastrar, por favor, tente novamente!', res)
-    
+
             })
 
         }
     }
 
-    res.json({
-        message: 'Post Cadastrado com sucesso!'
-    });
 
 }
 
@@ -73,4 +91,23 @@ exports.sendError = (sms, res) => {
         message: sms
     })
 
+}
+
+exports.deleteFile = async (req, res) => {
+
+    if (req.body.avatar)
+        await this.delete(req.body.avatar)
+
+    if (req.body.appeal_video)
+        await this.delete(req.body.appeal_video)
+
+}
+
+exports.delete = async (name) => {
+
+    await fs.unlink("public/uploads/informations/" + name, (data, err) => {
+
+        if (err) throw err;
+
+    });
 }
