@@ -18,6 +18,11 @@ module.exports = ({sequelize, Sequelize}) => {
         owner: {
             type: Sequelize.BOOLEAN,
             allowNull: false
+        }, 
+        isActive: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: true
         }
     })
 
