@@ -22,5 +22,4 @@ route.use('/help_information_user', require('./help-information-user.route'))
 
 route.use('/not_founds', require('./not-found.route'))
 
-
 module.exports = route
