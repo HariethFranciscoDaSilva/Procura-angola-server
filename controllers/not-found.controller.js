@@ -35,10 +35,11 @@ exports.all = async (req, res) => {
             model: User,
             as: 'user'
         }]
-    }).then(data => data).catch(e => e)
+    }).then(data => {
 
-    notFounds.map(data => data.user.password = '')
+        data.map((d, i) => d.user.password = '')
 
-    res.json(notFounds);
-
-}
+        res.json(data)
+    
+    }).catch(e => res.json(e))
+} 
