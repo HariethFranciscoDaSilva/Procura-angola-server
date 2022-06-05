@@ -16,7 +16,10 @@ module.exports = ({
         email: {
             type: Sequelize.STRING,
             unique: true,
-            allowNull: false
+            allowNull: false,
+            validate:{
+                isEmail: true
+            }
         },
         password: {
             type: Sequelize.STRING,
@@ -33,6 +36,11 @@ module.exports = ({
             type: Sequelize.INTEGER,
             allowNull: false,
             unique: true,
+            validate: {
+                isNumeric: true,
+                is: /^[0-9]+$/i
+                }
+                
         },
         isActive: {
             type: Sequelize.BOOLEAN,

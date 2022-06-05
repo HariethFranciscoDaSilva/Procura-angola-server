@@ -9,6 +9,10 @@ const tokenMiddleWare = require('../application/middlewares/middleware')
 
 route.get('/', controller.all)
 
+route.get('/all', controller.allUsers)
+
+route.delete('/delete/:id', controller.delete)
+
 route.get('/:id', controller.one)
 
 route.post('/authenticate', controller.authenticate, tokenMiddleWare.userSetToken)
