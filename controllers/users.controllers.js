@@ -62,6 +62,23 @@ exports.all = async (req, res) => {
 
 }
 
+exports.allUsers = async (req, res) => {
+
+
+    const users = await User.findAll().then(data => data.length).catch(e => e)
+
+    res.json(users);
+
+}
+
+exports.delete = async (req, res) => {
+
+    const users = await User.destroy({where:{id:req.params.id}}).then(data => data).catch(e => e)
+
+    res.json(users);
+
+}
+
 exports.one = async (req, res) => {
 
     const user = await User.findOne({
