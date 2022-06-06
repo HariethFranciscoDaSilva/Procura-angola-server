@@ -22,20 +22,25 @@ exports.userVerifyToken = (req, res) => {
             async (err, decode) => {
 
                 if (err)
-                    res.status(200).end('Sessão expirada');
+                    res.status(401).end('Sessão expirada');
                 else {
+
                     req.decode = decode
-                    if (decode.ip == Main.ip(req))
+
+                    let ip =  req.headers['x-forwarded-for'] ||
+                    req.connection.remoteAddress
+
+                    if (decode.ip == ip)
                         res.status(200).json(
                             req.body.token
                         )
                     else
-                        res.status(200).end('Sessão expirada');
+                        res.status(401).end('Sessão expirada');
                 }
             }
         );
     else
-        res.status(200).end('Sessão expirada');
+        res.status(401).end('Sessão expirada');
 
 }
 

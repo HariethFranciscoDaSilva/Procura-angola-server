@@ -13,6 +13,8 @@ route.get('/:id', controller.one)
 
 route.post('/authenticate', controller.authenticate, tokenMiddleWare.userSetToken)
 
+route.post('/verify_token', tokenMiddleWare.userVerifyToken)
+
 route.patch('/', controller.update)
 
 route.post('/new_account', uploadConfig.single("avatar"), controller.create)
