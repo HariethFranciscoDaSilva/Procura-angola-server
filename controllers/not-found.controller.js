@@ -11,7 +11,7 @@ const {
 
 
 exports.all = async (req, res) => {
-
+    
     const notFounds = await NotFound.findAll({
         order: [["updatedAt", "DESC"]],
         include: [{
@@ -46,12 +46,11 @@ exports.all = async (req, res) => {
 } 
 
 exports.one = async (req, res) => {
-
-    const notFound = await NotFound.findOne({
+    const notFound = await NotFound.findAll({
         order: [["updatedAt", "DESC"]],
-        where: {
+        /*where: {
             id: req.params.id
-        },
+        }, */
         include: [{
             model: Information,
             as: 'information',
@@ -74,11 +73,12 @@ exports.one = async (req, res) => {
             model: User,
             as: 'user'
         }]
-    }).then(data => {
+    
+        }).then(data => {
 
-        data.user.password = ''
+        data.map((d) => d.user.password = '')
 
-        res.json(data)
+        res.json(data.length)
     
     }).catch(e => res.json(e))
 } 
