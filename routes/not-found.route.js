@@ -6,6 +6,8 @@ const controller = require('../controllers/not-found.controller')
 
 
 route.get('/', controller.all)
-route.get('/all', controller.allUsers)
+
+route.get('/:id', controller.one)
+
 
 module.exports = route

@@ -18,7 +18,8 @@ route.use('/informations_files', require('./information-file.route'))
 
 route.use('/information_remarks', require('./information-remark.route'))
 
-route.use('/not_founds', require('./not-found.route'))
+route.use('/help_information_user', require('./help-information-user.route'))
 
+route.use('/not_founds', require('./not-found.route'))
 
 module.exports = route

@@ -12,7 +12,15 @@ module.exports = ({sequelize, Sequelize}) => {
 
     helpInformationUser.associate = (models) => {
 
-        helpInformationUser.belongsTo(models.Province)
+        helpInformationUser.belongsTo(models.User, {
+            as: "user",
+            foreignKey: "userId"
+        })
+
+        helpInformationUser.belongsTo(models.Information, {
+            as: "information",
+            foreignKey: "informationId"
+        })
 
     }
 
