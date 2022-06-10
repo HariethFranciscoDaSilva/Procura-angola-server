@@ -1,4 +1,5 @@
 const passHash = require("../application/generate-password/passHash")
+const nodemailer = require ('nodemailer')
 
 const fs = require('fs')
 
@@ -15,13 +16,29 @@ exports.create = async (req, res) => {
 
     req.body.password = password.password
 
+    const transporter = nodemailer.createTransport({
+        service : 'gmail',
+        auth: {
+            user : 'hariethfrancisco2021@gmail.com',
+            pass : 'vhueiihctzvtsrms'
+        }
+    });
+
+    //email
+    const info = await transporter.sendMail({
+        from: 'hariethfrancisco2021@gmail.com', // sender address
+        to: req.body.email, // list of receivers
+        subject: "Credenciais de Acessso",
+        text: `Seu username : ${req.body.username} e a sua password ${password.passGen}`,
+    })
+
     if (req.file)
         req.body.avatar = req.file.filename
 
     await User.create(req.body).then(data => {
 
-        console.log('Password: '+password.passGen)
-
+        
+        
         res.status(200).json({
             message: 'Usuário criado com sucesso, por favor, aguarde a confirmação por meio de seu email!'
         });
