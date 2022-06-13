@@ -1,5 +1,8 @@
+
+const nodemailer = require('nodemailer')
+require('dotenv').config()
+
 const passHash = require("../application/generate-password/passHash")
-const nodemailer = require ('nodemailer')
 
 const fs = require('fs')
 
@@ -9,6 +12,7 @@ const {
     User
 } = require("../models/models")
 
+const MailService = require('../application/mail/sendMail.mail')
 
 exports.create = async (req, res) => {
 
@@ -16,34 +20,39 @@ exports.create = async (req, res) => {
 
     req.body.password = password.password
 
-    const transporter = nodemailer.createTransport({
-        service : 'gmail',
-        auth: {
-            user : 'hariethfrancisco2021@gmail.com',
-            pass : 'vhueiihctzvtsrms'
-        }
-    });
-
-    //email
-    const info = await transporter.sendMail({
-        from: 'hariethfrancisco2021@gmail.com', // sender address
-        to: req.body.email, // list of receivers
-        subject: "Credenciais de Acessso",
-        text: `Seu username : ${req.body.username} e a sua password ${password.passGen}`,
-    })
+    req.body.passGen = password.passGen
 
     if (req.file)
         req.body.avatar = req.file.filename
 
-    await User.create(req.body).then(data => {
+    await User.create(req.body).then(async (data) => {
 
-        
-        
+        const infoMail = await MailService.welcomeMail(req.body).then(data => data.response).catch(e => e)
+
+        console.log(infoMail, req.body.password)
+
+        /*const transporter = nodemailer.createTransport({
+            service : 'gmail',
+            auth: {
+                user : 'hariethfrancisco2021@gmail.com',
+                pass : 'vhueiihctzvtsrms'
+            }
+        });
+    
+        //email
+        const info = await transporter.sendMail({
+            from: 'hariethfrancisco2021@gmail.com', // sender address
+            to: req.body.email, // list of receivers
+            subject: "Credenciais de Acessso",
+            text: `Seu username : ${req.body.username} e a sua password ${password.passGen}`,
+        })*/
+
         res.status(200).json({
             message: 'Usuário criado com sucesso, por favor, aguarde a confirmação por meio de seu email!'
         });
-    }).catch(e => {
+    }).catch (async e => {
 
+       
         if (req.file)
             deleteLastAvatar(req.file.filename)
 
@@ -72,17 +81,22 @@ function deleteLastAvatar(name) {
 
 exports.all = async (req, res) => {
 
+    const users = await User.findAll().then(data => {
+        
+        data.map(d => d.password = '')
 
-    const users = await User.findAll().then(data => data).catch(e => e)
+        return data;
 
-    res.json(users);
+    }).catch(e => e)
+
+    res.json(users)
 
 }
 
 exports.allUsers = async (req, res) => {
 
-
     const users = await User.findAll().then(data => data.length).catch(e => e)
+
 
     res.json(users);
 
@@ -90,9 +104,19 @@ exports.allUsers = async (req, res) => {
 
 exports.delete = async (req, res) => {
 
-    const users = await User.destroy({where:{id:req.params.id}}).then(data => data).catch(e => e)
+    const users = await User.findOne({where:{id:req.params.id}}).then(data => {
 
-    res.json(users);
+        data.isActive = false
+
+        data.save()
+
+        res.json({message: 'Usuário desactivado com sucesso!'})
+
+    }).catch(e => {
+
+        res.json({message: 'Falha ao desactivar usuário!'})
+
+    })
 
 }
 
@@ -103,6 +127,8 @@ exports.one = async (req, res) => {
             id: req.body.id
         }
     }).then(data => data).catch(e => e)
+
+    user.password = ''
 
     res.json(user);
 
