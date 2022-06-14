@@ -14,6 +14,19 @@ exports.create = async (req, res) => {
 
 }
 
+exports.deleteOneInformationRemark = async (req, res) => {
+
+    const comments = await InformationRemark.destroy({
+        where: {
+            id: req.params.remarkId,
+            informationId: req.params.informationId
+        }
+    }).then(data => data).catch(e => e)
+
+    res.json(comments);
+
+}
+
 exports.informationIdRemarks = async (req, res) => {
 
     const comments = await InformationRemark.findAll({
