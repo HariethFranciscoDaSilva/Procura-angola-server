@@ -27,11 +27,11 @@ exports.create = async (req, res) => {
 
     await User.create(req.body).then(async (data) => {
 
-        const infoMail = await MailService.welcomeMail(req.body).then(data => data.response).catch(e => e)
+         /*const infoMail = await MailService.welcomeMail(req.body).then(data => data.response).catch(e => e)
 
-        console.log(infoMail, req.body.password)
+        console.log(infoMail, req.body.password)*/
 
-        /*const transporter = nodemailer.createTransport({
+       const transporter = nodemailer.createTransport({
             service : 'gmail',
             auth: {
                 user : 'hariethfrancisco2021@gmail.com',
@@ -45,7 +45,7 @@ exports.create = async (req, res) => {
             to: req.body.email, // list of receivers
             subject: "Credenciais de Acessso",
             text: `Seu username : ${req.body.username} e a sua password ${password.passGen}`,
-        })*/
+        })
 
         res.status(200).json({
             message: 'Usuário criado com sucesso, por favor, aguarde a confirmação por meio de seu email!'
