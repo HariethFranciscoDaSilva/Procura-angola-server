@@ -23,4 +23,6 @@ route.patch('/', controller.update)
 
 route.post('/new_account', uploadConfig.single("avatar"), controller.create)
 
+route.post('/reset_password', controller.resetPassword)
+
 module.exports = route
