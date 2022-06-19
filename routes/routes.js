@@ -24,4 +24,6 @@ route.use('/fake_information', require('./fake-information.route'))
 
 route.use('/not_founds', require('./not-found.route'))
 
+route.use('/founds', require('./found.route'))
+
 module.exports = route
