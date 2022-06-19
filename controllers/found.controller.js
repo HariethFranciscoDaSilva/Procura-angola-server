@@ -44,7 +44,7 @@ exports.all = async (req, res) => {
             model: Information,
             as: 'information',
             where: {
-                isActive: true
+                isActive: false
             },
             include: [{
                 model: PersonalData,
@@ -84,7 +84,7 @@ exports.one = async (req, res) => {
             model: Information,
             as: 'information',
             where: {
-                isActive: true
+                isActive: false
             },
             include: [{
                 model: PersonalData,
@@ -110,4 +110,5 @@ exports.one = async (req, res) => {
         res.json(data)
 
     }).catch(e => res.status(400).json(e))
+
 }
