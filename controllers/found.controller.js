@@ -24,9 +24,9 @@ exports.create = async (req, res) => {
         isActive: false
     }, {
         where: {
-            id: information.id
+            id:  req.body.informationId
         },
-        include: [, {
+        include: [{
             model: User,
             as: 'user'
         }]
