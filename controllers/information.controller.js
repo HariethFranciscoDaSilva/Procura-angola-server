@@ -44,7 +44,7 @@ exports.create = async (req, res) => {
 
             this.deleteFile(req, res)
 
-            this.sendError(/*'Dados sobre informação incorrectos!'*/e, res)
+            this.sendError('Dados sobre informação incorrectos!', res)
 
         })
 
