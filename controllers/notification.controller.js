@@ -30,14 +30,11 @@ exports.desactivateNotification = async (req, res) => {
 
     const notification = await Notification.findOne({
         where: {
-            isActive: true,
             userId: req.params.id
         }
     }).then(data => data).catch(e => e)
 
-    notification.isActive = false;
-
-    await Notification.update(notification, {where: {
+    await Notification.destroy({where: {
         id: notification.id
     }}).then(data => data).catch(e => e)
 
@@ -46,7 +43,6 @@ exports.desactivateNotification = async (req, res) => {
             ["updatedAt", "DESC"]
         ],
         where: {
-            isActive: true,
             userId: req.params.id
         },
         include: [{
