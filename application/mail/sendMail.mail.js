@@ -15,9 +15,7 @@ require('dotenv').config()
 exports.welcomeMail = async ({email, passGen, fullName}) => {
 
     const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: false,
+        service : 'gmail',
         auth: {
             user: process.env.EMAIL,
             pass: process.env.PASS
@@ -38,9 +36,7 @@ exports.welcomeMail = async ({email, passGen, fullName}) => {
 exports.passwordChangeMail = async ({email, password2, fullName}) => {
 
     const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: false,
+        service : 'gmail',
         auth: {
             user: process.env.EMAIL,
             pass: process.env.PASS
