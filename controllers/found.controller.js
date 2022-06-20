@@ -120,3 +120,42 @@ exports.one = async (req, res) => {
     }).catch(e => res.status(400).json(e))
 
 }
+
+exports.oneByInformation = async (req, res) => {
+
+    const found = await Found.findOne({
+        order: [
+            ["updatedAt", "DESC"]
+        ],
+        where: {
+            informationId: req.params.id
+        },
+        include: [{
+            model: Information,
+            as: 'information',
+            include: [{
+                model: PersonalData,
+                as: 'personalData',
+                include: [{
+                    model: Town,
+                    as: 'town',
+                    include: [{
+                        model: Province,
+                        as: 'province',
+                    }]
+                }]
+            }]
+        }, {
+            model: User,
+            as: 'user'
+        }]
+
+    }).then(data => {
+
+        data.user.password = ''
+
+        res.json(data)
+
+    }).catch(e => res.status(400).json(e))
+
+}

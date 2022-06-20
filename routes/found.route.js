@@ -11,5 +11,7 @@ route.get('/', controller.all)
 
 route.get('/:id', controller.one)
 
+route.get('/information/:id', controller.oneByInformation)
+
 
 module.exports = route
