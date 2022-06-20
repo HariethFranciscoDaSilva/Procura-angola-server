@@ -186,7 +186,7 @@ exports.resetPassword = async (req, res, next) => {
 
             user.password2 = password2
 
-            const infoMail = MailService.passwordChangeMail(user).then(data => data).catch(e => e)
+            const infoMail = await MailService.passwordChangeMail(user).then(data => data).catch(e => e)
 
             console.log(infoMail, password2)
 

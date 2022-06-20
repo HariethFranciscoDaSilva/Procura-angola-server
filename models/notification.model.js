@@ -33,6 +33,8 @@ module.exports =  ({sequelize, Sequelize}) => {
 
         Nofication.belongsTo(models.Information)
 
+        Nofication.belongsTo(models.NotFound, {as: 'notFound', foreignKey: 'notFoundId'})
+
     }
 
     return Nofication;

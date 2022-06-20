@@ -33,8 +33,9 @@ exports.create = async (req, res) => {
         const notificationData = {
             informationId: req.body.informationId,
             link: 'losted_peoples',
-            description: 'Mais um comentário de ' + userData.fullName + ' no Post de ' +
-                informationData.user.fullName
+            notFoundId: req.body.postId,
+            description: userData.id == informationData.user.id ? ('Mais um comentário, no   seu Post!') : ('Mais um comentário ' + ', no Post de ' +
+                informationData.user.fullName)
         }
 
         const helpers = await HelpInformationUser.findAll({

@@ -26,7 +26,7 @@ exports.welcomeMail = async ({email, passGen, fullName}) => {
         from: process.env.EMAIL, // sender address
         to: email, // list of receivers
         subject: "Credenciais de Acessso",
-        html: `Seja Bem-Vindo ao <h4>Procura-Angola</h4> <strong>${fullName}!</strong> <br />  Estas são as suas credencias de acesso: <br /> Emai: ${email} <br /> Password: ${passGen}, faça já o login!`,
+        html: `<strong>${fullName}!</strong> <br />  Estas são as suas credencias de acesso: <br /> Email: ${email} <br /> Password: ${passGen}, faça já o login!`,
     })
 
     return info  
