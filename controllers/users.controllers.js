@@ -191,7 +191,7 @@ exports.resetPassword = async (req, res, next) => {
             console.log(infoMail, password2)
 
             res.status(200).json({
-                message: 'Password redefina com sucesso, por favor, verifique o seu email!'
+                message: 'Password redefinida com sucesso, por favor, verifique o seu email!'
             });
 
         }).catch(e => res.status(401).json({
