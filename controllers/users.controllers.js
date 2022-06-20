@@ -1,4 +1,3 @@
-
 const nodemailer = require('nodemailer')
 require('dotenv').config()
 
@@ -27,11 +26,11 @@ exports.create = async (req, res) => {
 
     await User.create(req.body).then(async (data) => {
 
-         /*const infoMail = await MailService.welcomeMail(req.body).then(data => data.response).catch(e => e)
+        const infoMail = await MailService.welcomeMail(req.body).then(data => data.response).catch(e => e)
 
-        console.log(infoMail, req.body.password)*/
+        console.log(infoMail, req.body.password)
 
-       const transporter = nodemailer.createTransport({
+        /*const transporter = nodemailer.createTransport({
             service : 'gmail',
             auth: {
                 user : 'hariethfrancisco2021@gmail.com',
@@ -45,11 +44,12 @@ exports.create = async (req, res) => {
             to: req.body.email, // list of receivers
             subject: "Credenciais de Acessso",
             text: `Seu username : ${req.body.username} e a sua password ${password.passGen}`,
-        })
+        })*/
 
         res.status(200).json({
             message: 'Usuário criado com sucesso, por favor, aguarde a confirmação por meio de seu email!'
         });
+
     }).catch(async e => {
 
 
@@ -97,24 +97,31 @@ exports.allUsers = async (req, res) => {
 
     const users = await User.findAll().then(data => data.length).catch(e => e)
 
-
     res.json(users);
 
 }
 
 exports.delete = async (req, res) => {
 
-    const users = await User.findOne({ where: { id: req.params.id } }).then(data => {
+    const users = await User.findOne({
+        where: {
+            id: req.params.id
+        }
+    }).then(data => {
 
         data.isActive = false
 
         data.save()
 
-        res.json({ message: 'Usuário desactivado com sucesso!' })
+        res.json({
+            message: 'Usuário desactivado com sucesso!'
+        })
 
     }).catch(e => {
 
-        res.json({ message: 'Falha ao desactivar usuário!' })
+        res.json({
+            message: 'Falha ao desactivar usuário!'
+        })
 
     })
 
@@ -149,14 +156,18 @@ exports.update = async (req, res) => {
 
 exports.resetPassword = async (req, res, next) => {
     try {
+
         const password = await passHash()
+
         const password1 = password.password
+
         const password2 = password.passGen
+
         const user = await User.findOne({
             where: {
                 email: req.body.email,
             }
-        }).then(u => u).catch(err => { });
+        }).then(u => u).catch(err => {});
 
         if (!user)
             return res.status(404).json({
@@ -164,36 +175,37 @@ exports.resetPassword = async (req, res, next) => {
                 message: "Email não encontrado",
                 status: 404
             });
+
         user.dataValues.password = password1
+
         await User.update(user.dataValues, {
             where: {
                 id: user.dataValues.id
             }
-        }).then(data => data).catch(e => e)
+        }).then(async (data) => {
 
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'hariethfrancisco2021@gmail.com',
-                pass: 'vhueiihctzvtsrms'
-            }
-        });
+            user.password2 = password2
 
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL, // sender address
-            to: req.body.email, // list of receivers
-            subject: "Recuperação de senha",
-            html: `A sua senha do procura angola foi redefinida com sucesso! <br /> Password: ${password2}, faça já o login!`,
-        })
-        res.status(200).json({
-            message: 'Password redefina com sucesso, por favor, verifique o seu email!'
-        });
+            const infoMail = await MailService.passwordChangeMail(user).then(data => data.response).catch(e => e)
+
+            console.log(infoMail, password2)
+
+            res.status(200).json({
+                message: 'Password redefina com sucesso, por favor, verifique o seu email!'
+            });
+
+        }).catch(e => res.status(401).json({
+            message: 'Email inválido'
+        }))
 
     } catch (error) {
+
         console.log(error.message)
+
         res.status(500).json({
-            message: error
+            message: error.message
         });
+
     }
 }
 exports.authenticate = async (req, res, next) => {
@@ -202,7 +214,7 @@ exports.authenticate = async (req, res, next) => {
         where: {
             email: req.body.email,
         }
-    }).then(u => u).catch(err => { });
+    }).then(u => u).catch(err => {});
 
     if (!user || !(await bcrypt.compare(req.body.password, user.password)))
         return res.status(404).json({
