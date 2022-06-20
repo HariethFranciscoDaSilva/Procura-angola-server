@@ -44,6 +44,8 @@ db.FakeInformation = require('./fake-information.model')(db)
 
 db.HelpInformationUser = require('./help-information-user.model')(db)
 
+db.Notification = require('./notification.model')(db)
+
 Object.keys(db).forEach(key => {
     if(db[key].associate)
         db[key].associate(db)

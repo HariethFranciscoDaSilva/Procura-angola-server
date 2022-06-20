@@ -2,7 +2,6 @@ const nodemailer = require('nodemailer')
 require('dotenv').config()
 
 
-
 /*let transporter = nodemailer.createTransport({
     service: 'gmail',
     port: 465,
@@ -48,7 +47,7 @@ exports.passwordChangeMail = async ({email, password2, fullName}) => {
         }
     });
 
-    const info = await transporter.sendMail({
+    return await transporter.sendMail({
 
         from: process.env.EMAIL, // sender address
         to: email, // list of receivers
@@ -56,11 +55,5 @@ exports.passwordChangeMail = async ({email, password2, fullName}) => {
         html: `Seja Bem-Vindo ao <h4>Procura-Angola</h4> com as novas credencias, <strong>${fullName}!</strong> <br />  Estas são as suas novas credencias de acesso: <br /> Emai: ${email} <br /> Password: ${password2}, faça já o login!`
 
     })
-
-    console.log(
-        `Seja Bem-Vindo ao <h4>Procura-Angola</h4> com as novas credencias, <strong>${fullName}!</strong> <br />  Estas são as suas novas credencias de acesso: <br /> Emai: ${email} <br /> Password: ${password2}, faça já o login!`
-    )
-    
-    return info  
 
 }

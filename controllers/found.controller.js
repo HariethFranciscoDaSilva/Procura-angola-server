@@ -5,7 +5,7 @@ const {
     Town,
     User,
     Province,
-    NotFound
+    InformationRemark
 } = require("../models/models")
 
 
@@ -20,9 +20,17 @@ exports.create = async (req, res) => {
 
     ).catch(e => e)
 
-    await Information.update({isActive: false}, { where: {
-        id: information.id
-    }}).then(data => data).catch(e => e);
+    await Information.update({
+        isActive: false
+    }, {
+        where: {
+            id: information.id
+        },
+        include: [, {
+            model: User,
+            as: 'user'
+        }]
+    }).then(data => data).catch(e => e);
 
 
     const found = await Found.create(req.body).then(() => res.json({

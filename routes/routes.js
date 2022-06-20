@@ -26,4 +26,6 @@ route.use('/not_founds', require('./not-found.route'))
 
 route.use('/founds', require('./found.route'))
 
+route.use('/notifications', require('./notification.route'))
+
 module.exports = route

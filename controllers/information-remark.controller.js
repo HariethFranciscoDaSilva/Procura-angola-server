@@ -2,15 +2,58 @@ const {
 
     InformationRemark,
     Information,
-    User
+    User,
+    Notification,
+    HelpInformationUser
 
 } = require("../models/models")
 
 exports.create = async (req, res) => {
 
-    const comment = await InformationRemark.create(req.body).then(data => data).catch(e => e)
+    const comment = await InformationRemark.create(req.body).then(data => data).catch(e => null)
 
-    res.json(comment);
+    if (comment) {
+
+        const informationData = await Information.findOne({
+            where: {
+                id: req.body.informationId
+            },
+            include: [{
+                model: User,
+                as: 'user'
+            }]
+        }).then(data => data).catch(e => e)
+
+        const userData = await User.findOne({
+            where: {
+                id: req.body.userId
+            }
+        }).then(data => data).catch(e => e)
+
+        const notificationData = {
+            informationId: req.body.informationId,
+            link: 'losted_peoples',
+            description: 'Mais um comentário de ' + userData.fullName + ' no Post de ' +
+                informationData.user.fullName
+        }
+
+        const helpers = await HelpInformationUser.findAll({
+            where: {
+                informationId: req.body.informationId
+            }
+        }).then(data => data).catch(e => e)
+
+        for (let i = 0; i < helpers.length; i++) {
+
+            notificationData.userId = helpers[i].userId
+
+            await Notification.create(notificationData).then(data => data).catch(e => e)
+
+        }
+
+        res.json(comment);
+
+    }
 
 }
 
@@ -46,11 +89,11 @@ exports.informationIdRemarks = async (req, res) => {
             }
         ]
     }).then(data => data.map(d => {
-        
+
         d.user.password = ''
 
         return d
-        
+
     })).catch(e => e)
 
     res.json(comments);
